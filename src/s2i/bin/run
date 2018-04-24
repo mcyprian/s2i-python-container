@@ -37,13 +37,13 @@ function get_default_web_concurrency() {
 
 function maybe_run_in_init_wrapper() {
   if [[ -z "$ENABLE_INIT_WRAPPER" ]]; then
-    exec $@
+    exec "$@"
   else
     local wrapper=`mktemp -p .`
     chmod u+x $wrapper
     cat <<EOF > $wrapper
 trap 'kill -TERM \$PID' TERM INT
-$@
+"$@"
 PID=\$!
 wait \$PID
 trap - TERM INT
